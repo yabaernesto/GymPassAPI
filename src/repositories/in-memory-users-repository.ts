@@ -1,0 +1,11 @@
+import { Prisma } from '@prisma/client'
+
+export class PrismaUsersRepository {
+  public users: any = []
+
+  async create(data: Prisma.UserCreateInput) {
+    this.users.push(data)
+
+    return this.users
+  }
+}
