@@ -2,14 +2,27 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CheckInsRepository } from '@/repositories/check-ins-repository'
 import { CheckInUseCase } from './chek-in'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { Decimal } from '@prisma/client/runtime/library'
 
 let checkInsRepository: CheckInsRepository
+let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 describe('Check-in Use Case', () => {
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInsRepository()
-    sut = new CheckInUseCase(checkInsRepository)
+    gymsRepository = new InMemoryGymsRepository()
+    sut = new CheckInUseCase(checkInsRepository, gymsRepository)
+
+    gymsRepository.items.push({
+      id: 'gym-01',
+      title: 'JavaScript Gym',
+      description: '',
+      phone: '',
+      latitude: new Decimal(-27.2092052),
+      longitude: new Decimal(-49.6401091),
+    })
 
     vi.useFakeTimers()
   })
@@ -22,23 +35,29 @@ describe('Check-in Use Case', () => {
     const { checkIn } = await sut.execute({
       userId: 'user-id',
       gymId: 'gym-id',
+      userLatitude: -27.2092052,
+      userLongitude: -49.6401091,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
   })
 
   it('shoud not be able to check in twice in the same day', async () => {
-    vi.setSystemTime(new Date(2022, 0, 20, 0, 0, 0))
+    vi.setSystemTime(new Date(Date.UTC(2022, 0, 20, 0, 0, 0)))
 
     await sut.execute({
       userId: 'user-id',
       gymId: 'gym-id',
+      userLatitude: -27.2092052,
+      userLongitude: -49.6401091,
     })
 
     await expect(() =>
       sut.execute({
         userId: 'user-id',
         gymId: 'gym-id',
+        userLatitude: -27.2092052,
+        userLongitude: -49.6401091,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -49,6 +68,8 @@ describe('Check-in Use Case', () => {
     await sut.execute({
       userId: 'user-id',
       gymId: 'gym-id',
+      userLatitude: -27.2092052,
+      userLongitude: -49.6401091,
     })
 
     vi.setSystemTime(new Date(2022, 0, 21, 0, 0, 0))
@@ -56,6 +77,8 @@ describe('Check-in Use Case', () => {
     const { checkIn } = await sut.execute({
       userId: 'user-id',
       gymId: 'gym-id',
+      userLatitude: -27.2092052,
+      userLongitude: -49.6401091,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
