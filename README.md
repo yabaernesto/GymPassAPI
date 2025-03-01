@@ -1,6 +1,10 @@
 # API Rest GymPass
 
-API Rest GymPass, é uma aplicação desenvolvida com base nos princípios SOLID, visando a criação de uma API RESTful para gerenciamento de academias e usuários. A aplicação permite funcionalidades como cadastro e autenticação de usuários, acesso ao perfil, registro e validação de check-ins, busca por academias próximas ou pelo nome, e cadastro de novas academias. O projeto utiliza o Prisma como ORM para interação com o banco de dados PostgreSQL, garantindo a persistência dos dados. Além disso, implementa ferramentas como ESLint para análise estática do código, tsup para empacotamento e compilação de projetos TypeScript, bcryptjs para criptografia de senhas e dotenv para gestão de variáveis de ambiente.
+API Rest GymPass, é uma aplicação desenvolvida com base nos princípios SOLID, visando a criação de uma API RESTful para gerenciamento de academias e usuários.
+
+A aplicação permite funcionalidades como cadastro e autenticação de usuários, acesso ao perfil, registro e validação de check-ins, busca por academias próximas ou pelo nome, e cadastro de novas academias.
+
+O projeto utiliza o Prisma como ORM para interação com o banco de dados PostgreSQL, garantindo a persistência dos dados. Além disso, implementa ferramentas como ESLint para análise estática do código, tsup para empacotamento e compilação de projetos TypeScript, bcryptjs para criptografia de senhas e dotenv para gestão de variáveis de ambiente.
 
 ## RFs (Requisitos funcionais)
 
