@@ -5,6 +5,7 @@ import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-c
 import { Decimal } from '@prisma/client/runtime/library'
 import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
 import { MaxDistanceError } from './errors/max-distance-error'
+import { prisma } from '@/lib/prisma'
 
 let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
@@ -24,6 +25,8 @@ describe('Check-in Use Case', () => {
       latitude: -27.2092052,
       longitude: -49.6401091,
     })
+
+    await prisma.checkIn.deleteMany({}) // Limpa todos os check-ins antes de cada teste
 
     vi.useFakeTimers()
   })
