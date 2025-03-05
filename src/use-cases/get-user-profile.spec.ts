@@ -13,7 +13,7 @@ describe('Get Use Profile Use Case', () => {
     sut = new GetUserProfileUseCase(usersRepository)
   })
 
-  it('shoud be able to get profile', async () => {
+  it('should be able to get profile', async () => {
     const createdUser = await usersRepository.create({
       name: 'Yaba Ernesto',
       email: 'yaba@gmail.com',
@@ -27,8 +27,8 @@ describe('Get Use Profile Use Case', () => {
     expect(user.name).toEqual('Yaba Ernesto')
   })
 
-  it('shoud not be able to get user profile with wrong id', async () => {
-    expect(() =>
+  it('should not be able to get user profile with wrong id', async () => {
+    await expect(() =>
       sut.execute({
         userId: 'non-existing-id',
       }),

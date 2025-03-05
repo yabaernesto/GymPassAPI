@@ -13,7 +13,7 @@ describe('Authenticate Use Case', () => {
     sut = new AuthenticateUseCase(usersRepository)
   })
 
-  it('shoud be able to authenticate', async () => {
+  it('should be able to authenticate', async () => {
     await usersRepository.create({
       name: 'Yaba Ernesto',
       email: 'yaba@gmail.com',
@@ -28,7 +28,7 @@ describe('Authenticate Use Case', () => {
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('shoud not be able to authenticate with wrong email', async () => {
+  it('should not be able to authenticate with wrong email', async () => {
     await expect(() =>
       sut.execute({
         email: 'yaba@gmail.com',
@@ -37,7 +37,7 @@ describe('Authenticate Use Case', () => {
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 
-  it('shoud not be able to authenticate with wrong password', async () => {
+  it('should not be able to authenticate with wrong password', async () => {
     await usersRepository.create({
       name: 'Yaba Ernesto',
       email: 'yaba@gmail.com',
