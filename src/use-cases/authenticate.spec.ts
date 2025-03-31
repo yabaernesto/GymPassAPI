@@ -1,13 +1,13 @@
-import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
-let usersRepository: InMemoryUsersRepository
-let sut: AuthenticateUseCase
-
 describe('Authenticate Use Case', () => {
+  let usersRepository: InMemoryUsersRepository
+  let sut: AuthenticateUseCase
+
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     sut = new AuthenticateUseCase(usersRepository)
@@ -15,13 +15,14 @@ describe('Authenticate Use Case', () => {
 
   it('should be able to authenticate', async () => {
     await usersRepository.create({
-      name: 'Yaba Ernesto',
-      email: 'yaba@gmail.com',
+      name: 'John Doe',
+      email: 'johndoe@gmail.com',
       password_hash: await hash('123456', 6),
+      created_at: new Date(),
     })
 
     const { user } = await sut.execute({
-      email: 'yaba@gmail.com',
+      email: 'johndoe@gmail.com',
       password: '123456',
     })
 
@@ -31,7 +32,7 @@ describe('Authenticate Use Case', () => {
   it('should not be able to authenticate with wrong email', async () => {
     await expect(() =>
       sut.execute({
-        email: 'yaba@gmail.com',
+        email: 'johndoe@gmail.com',
         password: '123456',
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
@@ -39,14 +40,15 @@ describe('Authenticate Use Case', () => {
 
   it('should not be able to authenticate with wrong password', async () => {
     await usersRepository.create({
-      name: 'Yaba Ernesto',
-      email: 'yaba@gmail.com',
+      name: 'John Doe',
+      email: 'johndoe@gmail.com',
       password_hash: await hash('123456', 6),
+      created_at: new Date(),
     })
 
     await expect(() =>
       sut.execute({
-        email: 'yaba@gmail.com',
+        email: 'johndoe@gmail.com',
         password: '123123',
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)

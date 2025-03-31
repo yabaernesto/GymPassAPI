@@ -1,5 +1,4 @@
 import 'dotenv/config'
-
 import { randomUUID } from 'node:crypto'
 import { execSync } from 'node:child_process'
 import { Environment } from 'vitest/environments'
@@ -22,7 +21,6 @@ function generateDatabaseURL(schema: string) {
 export default <Environment>{
   name: 'prisma',
   transformMode: 'ssr',
-
   async setup() {
     const schema = randomUUID()
     const databaseURL = generateDatabaseURL(schema)
@@ -36,6 +34,7 @@ export default <Environment>{
         await prisma.$executeRawUnsafe(
           `DROP SCHEMA IF EXISTS "${schema}" CASCADE`,
         )
+
         await prisma.$disconnect()
       },
     }

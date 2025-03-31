@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { FetchUserCheckInsHistoryUseCase } from './fetch-user-check-ins-history'
 
-let checkInsRepository: InMemoryCheckInsRepository
-let sut: FetchUserCheckInsHistoryUseCase
+describe('Fetch User Check Ins History Use Case', () => {
+  let checkInsRepository: InMemoryCheckInsRepository
+  let sut: FetchUserCheckInsHistoryUseCase
 
-describe('Fetch User Check-in History Use Case', () => {
   beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository()
     sut = new FetchUserCheckInsHistoryUseCase(checkInsRepository)
@@ -34,7 +34,7 @@ describe('Fetch User Check-in History Use Case', () => {
     ])
   })
 
-  it('should be able to fetch paginated user check-in history', async () => {
+  it('should be able to fetch paginated check-in history', async () => {
     for (let i = 1; i <= 22; i++) {
       await checkInsRepository.create({
         gym_id: `gym-${i}`,

@@ -1,13 +1,13 @@
-import { Gym, Prisma } from '@prisma/client'
-import { GymsRepository, type findManyNearby } from '../gyms-repository'
 import { randomUUID } from 'node:crypto'
-import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
+import { Gym, Prisma } from '@prisma/client'
+import { GymsRepository, FetchManyNearbyParams } from '../gyms-repository'
+import { getDistanceBetweenCoordinate } from '@/utils/get-distance-between-coordinate'
 
 export class InMemoryGymsRepository implements GymsRepository {
   public items: Gym[] = []
 
   async findById(id: string) {
-    const gym = this.items.find((item) => item.id === id)
+    const gym = this.items.find((gym) => gym.id === id)
 
     if (!gym) {
       return null
@@ -16,9 +16,9 @@ export class InMemoryGymsRepository implements GymsRepository {
     return gym
   }
 
-  async findManyNearby(params: findManyNearby): Promise<Gym[]> {
+  async findManyNearby(params: FetchManyNearbyParams) {
     return this.items.filter((item) => {
-      const distance = getDistanceBetweenCoordinates(
+      const distance = getDistanceBetweenCoordinate(
         { latitude: params.latitude, longitude: params.longitude },
         {
           latitude: item.latitude.toNumber(),
@@ -30,13 +30,13 @@ export class InMemoryGymsRepository implements GymsRepository {
     })
   }
 
-  async searchMany(query: string, page: number): Promise<Gym[]> {
+  async searchMany(query: string, page: number) {
     return this.items
       .filter((item) => item.title.includes(query))
       .slice((page - 1) * 20, page * 20)
   }
 
-  async create(data: Prisma.GymCreateInput): Promise<Gym> {
+  async create(data: Prisma.GymCreateInput) {
     const gym = {
       id: data.id ?? randomUUID(),
       title: data.title,

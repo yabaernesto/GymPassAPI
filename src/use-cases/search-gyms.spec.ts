@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
-import { SearchGymsUseCase } from './search-gyms'
+import { SearchGymUseCase } from './search-gyms'
 
-let gymsRepository: InMemoryGymsRepository
-let sut: SearchGymsUseCase
+describe('Search Gyms Use Case', () => {
+  let gymsRepository: InMemoryGymsRepository
+  let sut: SearchGymUseCase
 
-describe('Search Gym Use Case', () => {
   beforeEach(async () => {
     gymsRepository = new InMemoryGymsRepository()
-    sut = new SearchGymsUseCase(gymsRepository)
+    sut = new SearchGymUseCase(gymsRepository)
   })
 
   it('should be able to search for gyms', async () => {
@@ -16,7 +16,7 @@ describe('Search Gym Use Case', () => {
       title: 'JavaScript Gym',
       description: null,
       phone: null,
-      latitude: -27.2092052,
+      latitude: 27.2092052,
       longitude: -49.6401091,
     })
 
@@ -24,12 +24,12 @@ describe('Search Gym Use Case', () => {
       title: 'TypeScript Gym',
       description: null,
       phone: null,
-      latitude: -27.2092052,
+      latitude: 27.2092052,
       longitude: -49.6401091,
     })
 
     const { gyms } = await sut.execute({
-      query: 'JavaScript',
+      query: 'JavaScript Gym',
       page: 1,
     })
 
@@ -43,7 +43,7 @@ describe('Search Gym Use Case', () => {
         title: `JavaScript Gym ${i}`,
         description: null,
         phone: null,
-        latitude: -27.2092052,
+        latitude: 27.2092052,
         longitude: -49.6401091,
       })
     }
