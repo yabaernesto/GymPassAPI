@@ -1,0 +1,23 @@
+name: Run Unit Tests
+
+# Quando se pretende executar o workflow. push: sempre que houver um push
+on: [push]
+
+# Executar vários trabalhos ao mesmo tempo
+jobs:
+  run-unit-tests:
+    name: Run Unit Tests
+    # Executar o unit-test dentro de uma maquina ubuntu na sua ultima versão
+    runs-on: ubuntu-latest
+
+    # steps sao passos que se pretende que jobs execute
+    steps:
+      # actions
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run test
